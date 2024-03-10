@@ -26,32 +26,32 @@ export default function Sidebar({}: Props) {
   const sidebarMenu = [
     {
       title: "Dashboard",
-      link: "/",
+      link: "/dashboard",
       icon: <Home size={16} />,
       bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
     },
     {
       title: "Composer",
-      link: "/",
+      link: "/dashboard/compose",
       icon: <Piano size={16} />,
       bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
     },
     {
       title: "Améliorer",
-      link: "/",
+      link: "/dashboard/ameliorer",
       icon: <Speaker size={16} />,
       bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
     },
     {
       title: "Morceaux enreigistrés",
-      link: "/",
+      link: "/dashboard/save",
       icon: <CassetteTape size={16} />,
       bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
     },
   ];
   return (
     <>
-      <aside className="bg-slate-100 min-w-72 h-screen sticky top-0 overflow-y-auto hidden md:block">
+      <aside className="bg-slate-100 min-w-72 h-screen sticky top-0 overflow-y-auto  md:block">
         <div className="w-[90%] mx-auto bg-white p-4 mt-2 rounded-md">
           <div className="flex justify-center items-center flex-col">
             <Image src={"/logo.png"} alt="logo" width={80} height={80} />
@@ -67,8 +67,10 @@ export default function Sidebar({}: Props) {
               </Avatar>
             </div>
             <div>
-              <p className="text-sm">{session.data?.user?.name}</p>
-              <p className="text-[10px]">{session.data?.user?.email}</p>
+              <p className="text-sm lg:text-base">{session.data?.user?.name}</p>
+              <p className="text-[10px] lg:text-xs">
+                {session.data?.user?.email}
+              </p>
             </div>
           </div>
         </div>

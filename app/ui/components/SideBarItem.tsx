@@ -5,7 +5,7 @@ type Props = {
   data: {
     title: string;
     link: string;
-    icon: string;
+    icon: React.ReactNode;
     bg?: string;
   };
 };

@@ -12,7 +12,23 @@ type Props = {};
 export default function page({}: Props) {
   const [loading, setLoading] = useState(false);
   const session = useSession();
-  console.log(session);
+
+  const addUser = async (email: string, name: string) => {
+    const res = await fetch("/api/auth/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, name }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      console.log("User added:", data);
+    } else {
+      console.error("Failed to add user.");
+    }
+  };
   useEffect(() => {
     if (session.data) {
       redirect("/dashboard");
@@ -41,7 +57,12 @@ export default function page({}: Props) {
               aria-label="Sign in with Google"
               className="flex items-center gap-3 bg-google-button-blue rounded-full p-0.5 pr-4 transition-colors duration-300 hover:bg-google-button-blue-hover"
               onClick={() => {
-                signIn("google"), setLoading(true);
+                signIn("google"),
+                  addUser(
+                    session.data?.user?.email as string,
+                    session.data?.user?.name as string
+                  ),
+                  setLoading(true);
               }}
             >
               <div className="flex items-center justify-center bg-white w-9 h-9 rounded-full">
