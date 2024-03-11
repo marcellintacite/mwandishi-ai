@@ -1,15 +1,30 @@
-import { Button } from "@/components/ui/button";
-import { BookHeadphones } from "lucide-react";
+import { freePromps } from "@/app/data/prompt";
+import { prisma } from "@/app/helpers/prismaInstance";
+
+import { Guitar } from "lucide-react";
+import { getServerSession } from "next-auth";
 import React from "react";
 
 type Props = {};
 
-export default function Navbar({}: Props) {
+export default async function Navbar({}: Props) {
+  const session = await getServerSession();
+  const prompNumber = await prisma.prompt.count({
+    where: {
+      user: {
+        email: session?.user?.email as string,
+      },
+    },
+  });
+  console.log(prompNumber);
   return (
-    <nav className="bg-white flex items-center justify-center h-14 w-full">
-      <Button variant={"outline"} size={"icon"}>
-        <BookHeadphones />
-      </Button>
+    <nav className="bg-white  items-center justify-center h-14 w-full hidden md:flex">
+      <div className="flex">
+        <div className="flex items-center gap-2">
+          <Guitar size={16} className="text-pink-600" />
+          Il vous reste {freePromps - prompNumber} / {freePromps} essaies
+        </div>
+      </div>
     </nav>
   );
 }

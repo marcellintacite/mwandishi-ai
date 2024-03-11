@@ -40,7 +40,7 @@ export default function SongSide({ data }: Props) {
     setSong(currentSong || (data?.result as string));
   }, [currentSong, data]);
   return (
-    <div className="flex flex-1 justify-center items-center h-full pb-7 relative section mx-3">
+    <div className="flex  flex-1 justify-center items-center h-full pb-7  relative section md:mx-3 p-0 ">
       {/* a place where there qill be a log from lef and wait for user to generate a song an shgow the song */}
       {!song ? (
         <div className="flex flex-col items-center">

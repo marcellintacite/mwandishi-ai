@@ -1,5 +1,7 @@
 import { prisma } from "@/app/helpers/prismaInstance";
+import { BreadcrumbWithCustomSeparator } from "@/app/ui/components/BreadCamp";
 import { Piano } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -25,6 +27,7 @@ export default async function page({}: Props) {
           </div>
         </Link>
       </header>
+      <BreadcrumbWithCustomSeparator />
       {composers.length === 0 ? (
         <div className="flex justify-center items-center h-96">
           <p className="text-gray-500 text-lg font-bold">
@@ -32,16 +35,26 @@ export default async function page({}: Props) {
           </p>
         </div>
       ) : (
-        <div className="grid mt-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid mt-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {composers.map((composer) => (
             <div
               key={composer.id}
               className="bg-white p-4 rounded-md shadow-md"
             >
-              <h3 className="text-lg font-bold">{composer.category}</h3>
-              <p className="text-gray-500">{composer.prompt}</p>
               <Link href={`/dashboard/compose/view?id=${composer.id}`}>
-                Voir plus
+                <div className="flex justify-center items-center bg-slate-100 rounded-md">
+                  <Image
+                    src={"/onde.png"}
+                    width={200}
+                    height={200}
+                    alt="Onde"
+                  />
+                </div>
+                {/* get the first line /n of the result as title and remove ** */}
+                <h3 className="text-lg font-bold">
+                  {composer.result.split("\n")[0].replace("**", "")}
+                </h3>
+                <p className="text-gray-500">{composer.category}</p>
               </Link>
             </div>
           ))}

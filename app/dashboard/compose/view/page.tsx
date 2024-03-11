@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import React from "react";
 import SongSide from "../create/SongSide";
 import Image from "next/image";
+import { BreadcrumbWithCustomSeparator } from "@/app/ui/components/BreadCamp";
+import Action from "./Action";
 
 type Props = {
   searchParams: { id: string };
@@ -19,10 +21,17 @@ export default async function page({ searchParams: { id } }: Props) {
     return notFound();
   }
 
-  console.log(data);
   return (
-    <section className="section mx-2 w-auto flex flex-col lg:flex-row">
-      <SongSide data={data} />
+    <section className="section md:mx-2 w-auto flex flex-col lg:flex-row">
+      <div className="flex-1">
+        <div className="p-2 w-full">
+          {/* <BreadcrumbWithCustomSeparator /> */}
+          <div className="flex items-center justify-end w-full">
+            <Action prompt={data} />
+          </div>
+        </div>
+        <SongSide data={data} />
+      </div>
 
       {/* showing recent composition */}
       {/* Showing a create button when there's no song */}

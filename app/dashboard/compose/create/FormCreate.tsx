@@ -30,7 +30,7 @@ export default function FormCreate({}: Props) {
   return (
     <form
       ref={form}
-      className="flex-1"
+      className="flex-1 h-full"
       action={(data) =>
         GenerateSong(data).then((res) => {
           addResponse(res);
