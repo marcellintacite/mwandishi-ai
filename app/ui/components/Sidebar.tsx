@@ -51,7 +51,7 @@ export default function Sidebar({}: Props) {
   ];
   return (
     <>
-      <aside className="bg-slate-100 min-w-72 h-screen sticky top-0 overflow-y-auto  md:block">
+      <aside className="bg-slate-100 min-w-72 h-screen sticky top-0 overflow-y-auto hidden md:block">
         <div className="w-[90%] mx-auto bg-white p-4 mt-2 rounded-md">
           <div className="flex justify-center items-center flex-col">
             <Image src={"/logo.png"} alt="logo" width={80} height={80} />

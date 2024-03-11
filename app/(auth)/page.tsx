@@ -16,6 +16,14 @@ export default function Home() {
     await handleExtractText(newFile);
   };
 
+    /**
+   * Handle extraction of text from a PDF file.
+   *
+   * @param {File} pdfFile - The PDF file to extract text from
+   * @return {void} 
+   */
+
+
   const handleExtractText = async (pdfFile: File) => {
     if (!pdfFile) return;
 
