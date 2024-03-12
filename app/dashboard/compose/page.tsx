@@ -4,12 +4,17 @@ import { Piano } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { getServerSession } from "next-auth";
+import { freePromps } from "@/app/data/prompt";
 
 type Props = {};
 
+export const revalidate = 800;
+
 export default async function page({}: Props) {
+  const session = await getServerSession();
   const composers = await prisma.prompt.findMany({
-    where: { type: "compose" },
+    where: { type: "compose", user: { email: session?.user?.email as string } },
   });
 
   return (
@@ -18,14 +23,34 @@ export default async function page({}: Props) {
       {/* Showing a create button when there's no song */}
       <header className="flex justify-between">
         <h3 className="text-lg font-bold">Mes compositions</h3>
-        <Link
-          href="/dashboard/compose/create"
-          className="bg-slate-800 text-white p-2 rounded-md"
-        >
-          <div className="flex items-center gap-2">
-            Composer <Piano size={16} />
-          </div>
-        </Link>
+
+        {
+          // if the user has reached the limit of free prompts
+          composers.length === freePromps && (
+            <Link
+              href="/dashboard/compose/create"
+              aria-disabled={composers.length === freePromps}
+              className="bg-slate-800 text-white p-2 rounded-md"
+            >
+              Payer pour plus de composition
+            </Link>
+          )
+        }
+
+        {
+          // if the user has not reached the limit of free prompts
+          composers.length !== freePromps && (
+            <Link
+              href="/dashboard/compose/create"
+              aria-disabled={composers.length === freePromps}
+              className="bg-slate-800 text-white p-2 rounded-md"
+            >
+              <div className="flex items-center gap-2">
+                Composer <Piano size={16} />
+              </div>
+            </Link>
+          )
+        }
       </header>
       <BreadcrumbWithCustomSeparator />
       {composers.length === 0 ? (

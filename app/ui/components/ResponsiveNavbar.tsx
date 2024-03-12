@@ -7,6 +7,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { ResponsiveSidebar } from "./SidebarResponsive";
 import { usePathname } from "next/navigation";
+import Number from "./Number";
 
 type Props = {};
 
@@ -35,11 +36,7 @@ export default function ResponsiveNavbar({}: Props) {
 
         {/* token */}
         <div className="">
-          <div className="flex items-center gap-2">
-            <Award className="text-slate-500" size={16} />
-
-            <p className="text-sm text-orange-400">10</p>
-          </div>
+          <Number />
         </div>
       </header>
 

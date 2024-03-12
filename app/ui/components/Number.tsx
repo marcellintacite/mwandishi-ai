@@ -9,7 +9,7 @@ type Props = {};
 
 export const revalidate = 800;
 
-export default async function Navbar({}: Props) {
+export default async function Number({}: Props) {
   const session = await getServerSession();
   const prompNumber = await prisma.prompt.count({
     where: {
@@ -20,7 +20,7 @@ export default async function Navbar({}: Props) {
   });
 
   return (
-    <nav className="bg-white  items-center justify-center h-14 w-full hidden md:flex">
+    <nav className="bg-white  items-center justify-center h-14 w-full flex md:hidden">
       <div className="flex">
         <div className="flex items-center gap-2">
           <Guitar size={16} className="text-pink-600" />

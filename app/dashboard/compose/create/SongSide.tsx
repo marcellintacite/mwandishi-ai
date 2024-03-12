@@ -18,7 +18,7 @@ export default function SongSide({ data }: Props) {
 
   const [song, setSong] = React.useState(currentSong || data?.result);
   const [loaded, setLoaded] = React.useState(false);
-  console.log("currentSong", currentSong);
+
   // format the song to be displayed in a better way and not as a string
   // replace \n with <br>
   // take all title that are in ** ** and make them bold
@@ -40,7 +40,7 @@ export default function SongSide({ data }: Props) {
     setSong(currentSong || (data?.result as string));
   }, [currentSong, data]);
   return (
-    <div className="flex  flex-1 justify-center items-center h-full pb-7  relative section md:mx-3 p-0 ">
+    <div className="flex  flex-1 justify-center items-center h-full pb-7  relative section mx-2 md:mx-3 p-0 ">
       {/* a place where there qill be a log from lef and wait for user to generate a song an shgow the song */}
       {!song ? (
         <div className="flex flex-col items-center">
@@ -52,7 +52,7 @@ export default function SongSide({ data }: Props) {
         </div>
       ) : (
         <div className="border h-auto lg:h-full rounded-md w-full overflow-y-auto">
-          <header className="flex gap-4 items-center bg-slate-100 sticky top-0">
+          <header className="flex gap-4 items-center bg-slate-200 sticky top-0">
             <Image src={logo} alt="logo" width={70} />
             <div className="flex flex-col">
               <h2 className="font-bold">Mwandishi AI</h2>

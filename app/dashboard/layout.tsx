@@ -12,20 +12,20 @@ type Props = {
 export default async function layout({ children }: Props) {
   const res = await getServerSession();
 
-  // const userInDatabase = await prisma.user.findUnique({
-  //   where: {
-  //     email: res?.user?.email as string,
-  //   },
-  // });
+  const userInDatabase = await prisma.user.findUnique({
+    where: {
+      email: res?.user?.email as string,
+    },
+  });
 
-  // if (!userInDatabase) {
-  //   await prisma.user.create({
-  //     data: {
-  //       email: res?.user?.email as string,
-  //       name: res?.user?.name as string,
-  //     },
-  //   });
-  // }
+  if (!userInDatabase) {
+    await prisma.user.create({
+      data: {
+        email: res?.user?.email as string,
+        name: res?.user?.name as string,
+      },
+    });
+  }
   return (
     <>
       <ResponsiveNavbar />
