@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 
 type Props = {};
 
-export default function page({}: Props) {
+export default function Page({}: Props) {
   const [loading, setLoading] = useState(false);
   const session = useSession();
 

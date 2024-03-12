@@ -77,7 +77,7 @@ export default function Sidebar({}: Props) {
 
         <div className="w-[90%] mx-auto bg-white p-4 mt-2 rounded-md">
           {sidebarMenu.map((item, index) => (
-            <SideBarItem data={item} />
+            <SideBarItem data={item} key={item.title} />
           ))}
         </div>
 
