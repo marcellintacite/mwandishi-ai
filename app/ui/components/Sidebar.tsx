@@ -2,6 +2,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   CassetteTape,
+  FileSpreadsheet,
   Home,
   LogOut,
   Piano,
@@ -39,7 +40,7 @@ export default function Sidebar({}: Props) {
     {
       title: "Améliorer",
       link: "/dashboard/ameliorer",
-      icon: <Speaker size={16} />,
+      icon: <FileSpreadsheet size={16} />,
       bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
     },
     {
