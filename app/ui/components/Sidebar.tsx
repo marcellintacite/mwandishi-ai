@@ -38,17 +38,17 @@ export default function Sidebar({}: Props) {
       bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
     },
     {
-      title: "Améliorer",
+      title: "CV Checker",
       link: "/dashboard/ameliorer",
       icon: <FileSpreadsheet size={16} />,
       bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
     },
-    {
-      title: "Morceaux enreigistrés",
-      link: "/dashboard/save",
-      icon: <CassetteTape size={16} />,
-      bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
-    },
+    // {
+    //   title: "Morceaux enreigistrés",
+    //   link: "/dashboard/save",
+    //   icon: <CassetteTape size={16} />,
+    //   bg: "shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]",
+    // },
   ];
   return (
     <>

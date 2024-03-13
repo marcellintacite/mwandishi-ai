@@ -18,7 +18,7 @@ export const resumeRevision = async (resume: string, preferedWork: string) => {
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
   const generationConfig = {
-    temperature: 0.2,
+    temperature: 0.3,
     topK: 1,
     topP: 1,
     maxOutputTokens: 2048,
@@ -45,7 +45,7 @@ export const resumeRevision = async (resume: string, preferedWork: string) => {
 
   const parts = [
     {
-      text: `Donnez des points à améliorer niveau contenu dans mon CV, avec des exemple, Je cherche un emploi en tant que ${preferedWork} et voici mon cv : ${resume} , est que mon profile rempli le poste .`,
+      text: `Donnez des points à améliorer niveau contenu dans mon CV, avec des exemple, Je cherche un emploi en tant que ${preferedWork} et voici mon cv : ${resume} , est-ce que que mon profile rempli le poste .`,
     },
   ];
 
@@ -60,21 +60,25 @@ export const resumeRevision = async (resume: string, preferedWork: string) => {
   //   return response.text();
 
   // adding the response to the databse
-  await prisma.prompt.create({
-    data: {
-      user: {
-        connect: {
-          email: session?.user?.email as string,
+  await prisma.prompt
+    .create({
+      data: {
+        user: {
+          connect: {
+            email: session?.user?.email as string,
+          },
         },
+        prompt: parts[0].text,
+        result: response.text(),
+        category: preferedWork,
+        rythm: "0",
+        type: "cv",
+        createdAt: new Date(),
       },
-      prompt: parts[0].text,
-      result: response.text(),
-      category: preferedWork,
-      rythm: "0",
-      type: "cv",
-      createdAt: new Date(),
-    },
-  });
+    })
+    .then((res) => {
+      console.log("Prompt added to the database", res);
+    });
 
   return response.text();
 };

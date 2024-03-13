@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       const tempFilePath =
         process.env.NODE_ENV === "development"
           ? `C:/Users/hp/Desktop/mwandishi-ai/public/tmp/${fileName}.pdf`
-          : `/public/tmp/${fileName}.pdf`;
+          : `/tmp/${fileName}.pdf`;
 
       // Convert ArrayBuffer to Buffer
       const fileBuffer = Buffer.from(await uploadedFile.arrayBuffer());

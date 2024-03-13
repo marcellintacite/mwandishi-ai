@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const metadata: Metadata = {
-  title: "Connexion | Mwandishi AI",
+  title: "Mwandishi AI",
   description: "Connectez-vous pour accéder à votre compte Mwandishi AI",
 };
 
