@@ -1,23 +1,26 @@
+"use client";
 import { freePromps } from "@/app/data/prompt";
-import { prisma } from "@/app/helpers/prismaInstance";
 
 import { Guitar } from "lucide-react";
-import { getServerSession } from "next-auth";
-import React from "react";
+import { useSession } from "next-auth/react";
+
+import React, { use, useEffect } from "react";
 
 type Props = {};
 
-export const revalidate = 800;
+export default function Number({}: Props) {
+  const { data: user, status } = useSession();
 
-export default async function Number({}: Props) {
-  const session = await getServerSession();
-  const prompNumber = await prisma.prompt.count({
-    where: {
-      user: {
-        email: session?.user?.email as string,
-      },
-    },
-  });
+  const [prompNumber, setPrompNumber] = React.useState(0);
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetch("/api/music/prompt")
+        .then((res) => res.json())
+        .then((data) => {
+          setPrompNumber(data.data.prompNumber);
+        });
+    }
+  }, [status]);
 
   return (
     <nav className="bg-white  items-center justify-center h-14 w-full flex md:hidden">

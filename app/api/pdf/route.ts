@@ -1,71 +1,71 @@
-// node --version # Should be >= 18
-// npm install @google/generative-ai
-
-import { NextRequest, NextResponse } from "next/server";
-
-const {
-  GoogleGenerativeAI,
-  HarmCategory,
-  HarmBlockThreshold,
-} = require("@google/generative-ai");
-
-const MODEL_NAME = "gemini-1.0-pro";
-const API_KEY = "AIzaSyBbKBXWso4SOdw6BsPg1VVSLk1etuyfG1s";
-
-async function run(text: string) {
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-
-  const generationConfig = {
-    temperature: 0.9,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
-
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
-
-  const parts = [
-    {
-      text: `Donne un resume de 4 lignes à ce texte et surtout il faut ressortir les mots clés : ${text}`,
-    },
-  ];
-
-  const result = await model.generateContent({
-    contents: [{ role: "user", parts }],
-    generationConfig,
-    safetySettings,
-  });
-
-  const response = result.response;
-
-  return response.text();
-}
+import { NextRequest, NextResponse } from "next/server"; // To handle the request and response
+import { promises as fs } from "fs"; // To save the file temporarily
+import { v4 as uuidv4 } from "uuid"; // To generate a unique filename
+import PDFParser from "pdf2json"; // To parse the pdf
+import { getServerSession } from "next-auth";
+import { resumeRevision } from "./resumeRevision";
+import { prisma } from "@/app/helpers/prismaInstance";
 
 export async function POST(req: NextRequest) {
-  const { text } = await req.json();
+  const session = await getServerSession();
+  const formData: FormData = await req.formData();
+  const uploadedFiles = formData.getAll("filepond");
+  const work = formData.get("work");
+  console.log("Work:", work);
+  let fileName = "";
+  let parsedText = "";
 
-  const resultat = await run(text);
+  if (uploadedFiles && uploadedFiles.length > 0) {
+    const uploadedFile = uploadedFiles[1];
 
-  return NextResponse.json({
-    message: "Success",
-    response: resultat,
-  });
+    // Check if uploadedFile is of type File
+    if (uploadedFile instanceof File) {
+      // Generate a unique filename
+      fileName = uuidv4();
+
+      // Convert the uploaded file into a temporary file
+      const tempFilePath = `C:/Users/hp/Desktop/mwandishi-ai/public/tmp/${fileName}.pdf`;
+
+      // Convert ArrayBuffer to Buffer
+      const fileBuffer = Buffer.from(await uploadedFile.arrayBuffer());
+
+      // Save the buffer as a file
+      await fs.writeFile(tempFilePath, fileBuffer);
+
+      // Parse the pdf using pdf2json. See pdf2json docs for more info.
+
+      // The reason I am bypassing type checks is because
+      // the default type definitions for pdf2json in the npm install
+      // do not allow for any constructor arguments.
+      // You can either modify the type definitions or bypass the type checks.
+      // I chose to bypass the type checks.
+      const pdfParser = new (PDFParser as any)(null, 1);
+
+      // See pdf2json docs for more info on how the below works.
+      pdfParser.on("pdfParser_dataError", (errData: any) =>
+        console.log(errData.parserError)
+      );
+
+      pdfParser.on("pdfParser_dataReady", async () => {
+        // console.log((pdfParser as any).getRawTextContent());
+        parsedText = (pdfParser as any).getRawTextContent();
+        await resumeRevision(parsedText, work as string);
+
+        // Delete the temporary file
+        await fs.unlink(tempFilePath as string);
+      });
+
+      pdfParser.loadPDF(tempFilePath);
+    } else {
+      console.log("Uploaded file is not in the expected format.");
+    }
+  } else {
+    console.log("No files found.");
+  }
+
+  console.log("Parsed text:", parsedText);
+
+  const response = new NextResponse(parsedText, { status: 200 });
+  response.headers.set("FileName", fileName);
+  return response;
 }

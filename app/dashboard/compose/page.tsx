@@ -1,6 +1,6 @@
 import { prisma } from "@/app/helpers/prismaInstance";
 import { BreadcrumbWithCustomSeparator } from "@/app/ui/components/BreadCamp";
-import { Piano } from "lucide-react";
+import { Lock, Piano } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -9,13 +9,17 @@ import { freePromps } from "@/app/data/prompt";
 
 type Props = {};
 
-export const revalidate = 800;
-
 export default async function page({}: Props) {
   const session = await getServerSession();
   const composers = await prisma.prompt.findMany({
     where: { type: "compose", user: { email: session?.user?.email as string } },
   });
+
+  const numberofUserPrompts = await prisma.prompt.count({
+    where: { user: { email: session?.user?.email as string } },
+  });
+
+  console.log(numberofUserPrompts, freePromps);
 
   return (
     <section className="section mx-2 w-auto">
@@ -26,20 +30,22 @@ export default async function page({}: Props) {
 
         {
           // if the user has reached the limit of free prompts
-          composers.length === freePromps && (
+          numberofUserPrompts === freePromps && (
             <Link
-              href="/dashboard/compose/create"
+              href="mailto:aksantibahiga3@gmail.com"
               aria-disabled={composers.length === freePromps}
               className="bg-slate-800 text-white p-2 rounded-md"
             >
-              Payer pour plus de composition
+              <div className="flex gap-2 items-center">
+                Souscrire <Lock size={16} />
+              </div>
             </Link>
           )
         }
 
         {
           // if the user has not reached the limit of free prompts
-          composers.length !== freePromps && (
+          numberofUserPrompts !== freePromps && (
             <Link
               href="/dashboard/compose/create"
               aria-disabled={composers.length === freePromps}

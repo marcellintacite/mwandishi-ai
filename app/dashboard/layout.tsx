@@ -4,6 +4,7 @@ import Navbar from "../ui/components/Navbar";
 import { getServerSession } from "next-auth";
 import { prisma } from "../helpers/prismaInstance";
 import ResponsiveNavbar from "../ui/components/ResponsiveNavbar";
+import { redirect } from "next/navigation";
 
 type Props = {
   children: ReactNode;
@@ -11,6 +12,10 @@ type Props = {
 
 export default async function layout({ children }: Props) {
   const res = await getServerSession();
+
+  if (!res?.user) {
+    redirect("/login");
+  }
 
   const userInDatabase = await prisma.user.findUnique({
     where: {
