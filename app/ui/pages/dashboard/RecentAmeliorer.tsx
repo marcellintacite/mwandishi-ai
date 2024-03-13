@@ -40,7 +40,7 @@ export default async function RecentAmeliorer({}: Props) {
       )}
       <div className="mt-4 flex flex-col gap-2">
         {threeFirstPromp.map((prompt) => (
-          <Link href={`/dashboard/ameliorer/view/${prompt.id}`}>
+          <Link href={`/dashboard/ameliorer/view/${prompt.id}`} key={prompt.id}>
             <div
               key={prompt.id}
               className="flex justify-between gap-3 items-center shadow-sm p-3 rounded-lg bg-white hover:shadow-shadow-lg transition-all cursor-pointer"

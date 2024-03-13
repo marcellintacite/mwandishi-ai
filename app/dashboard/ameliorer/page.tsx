@@ -65,7 +65,10 @@ export default async function page({}: Props) {
           }
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.map((prompt) => (
-              <Link href={`/dashboard/ameliorer/view/${prompt.id}`}>
+              <Link
+                href={`/dashboard/ameliorer/view/${prompt.id}`}
+                key={prompt.id}
+              >
                 <div
                   key={prompt.id}
                   className="flex flex-col justify-between gap-3 items-center shadow-sm p-3 rounded-lg bg-white hover:shadow-shadow-lg transition-all cursor-pointer"
