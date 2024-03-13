@@ -24,7 +24,11 @@ export async function POST(req: NextRequest) {
       fileName = uuidv4();
 
       // Convert the uploaded file into a temporary file
-      const tempFilePath = `C:/Users/hp/Desktop/mwandishi-ai/public/tmp/${fileName}.pdf`;
+      // `C:/Users/hp/Desktop/mwandishi-ai/public/tmp/${fileName}.pdf`; use thi on dev
+      const tempFilePath =
+        process.env.NODE_ENV === "development"
+          ? `C:/Users/hp/Desktop/mwandishi-ai/public/tmp/${fileName}.pdf`
+          : `/public/tmp/${fileName}.pdf`;
 
       // Convert ArrayBuffer to Buffer
       const fileBuffer = Buffer.from(await uploadedFile.arrayBuffer());
