@@ -10,11 +10,6 @@ import { Metadata } from "next";
 
 type Props = {};
 
-export const metadata: Metadata = {
-  title: "Login | Mwandishi AI",
-  description: "Connectez-vous pour accéder à votre compte Mwandishi AI",
-};
-
 export default function Page({}: Props) {
   const [loading, setLoading] = useState(false);
   const session = useSession();
