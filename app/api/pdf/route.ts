@@ -23,12 +23,19 @@ export async function POST(req: NextRequest) {
       // Generate a unique filename
       fileName = uuidv4();
 
+      console.log("Current directory:", __dirname);
+
       // Convert the uploaded file into a temporary file
       // `C:/Users/hp/Desktop/mwandishi-ai/public/tmp/${fileName}.pdf`; use thi on dev
+      // const tempFilePath =
+      //   process.env.NODE_ENV === "development"
+      //     ? `C:/Users/hp/Desktop/mwandishi-ai/public/tmp/${fileName}.pdf`
+      //     : `/tmp/${fileName}.pdf`;
+      // tempFile should use the all path in the remote dir on vercel as we do for windows
       const tempFilePath =
         process.env.NODE_ENV === "development"
           ? `C:/Users/hp/Desktop/mwandishi-ai/public/tmp/${fileName}.pdf`
-          : `/tmp/${fileName}.pdf`;
+          : `${process.cwd()}/tmp/${fileName}.pdf`;
 
       // Convert ArrayBuffer to Buffer
       const fileBuffer = Buffer.from(await uploadedFile.arrayBuffer());

@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://mwandishi-ai.vercel.app"),
   title: "Mwandishi AI",
   description: "Votre assistant pour composer de la musique",
 
