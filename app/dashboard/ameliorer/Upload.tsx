@@ -55,10 +55,14 @@ export default function FileUpload() {
             revert: null,
           }}
           className={"mx-3"}
-          onprocessfile={(error, file) => {
+          onprocessfile={async (error, file) => {
             console.log(error, file);
+            router.refresh();
+            const lastCv = await fetch("/api/pdf").then((res) => res.json());
+
             router.prefetch("/dashboard/ameliorer/view");
-            router.push("/dashboard/ameliorer/view");
+            router.push(`/dashboard/ameliorer/view/${lastCv.id}`);
+            // router.push("/dashboard/ameliorer/view");
           }}
         />
       </form>

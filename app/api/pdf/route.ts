@@ -80,3 +80,17 @@ export async function POST(req: NextRequest) {
   response.headers.set("FileName", fileName);
   return response;
 }
+
+export async function GET(req: NextRequest) {
+  // get last added cv
+  const lastCv = await prisma.prompt.findFirst({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  if (lastCv) {
+    return NextResponse.json(lastCv);
+  }
+
+  return NextResponse.json({});
+}

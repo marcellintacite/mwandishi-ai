@@ -29,7 +29,7 @@ export default async function page({ params }: Props) {
   return (
     <section className="section mx-2 w-auto min-h-[70vh] flex flex-col gap-3 lg:flex-row">
       <div className="bg-white p-4 rounded-md shadow-md flex-1">
-        <h4 className="text-lg font-bold mt-2">{data?.category}</h4>
+        <h4 className="text-2xl font-bold mt-2">{data?.category}</h4>
         <p className="text-sm text-gray-600">{data?.type}</p>
         <div className="mt-4">
           <p

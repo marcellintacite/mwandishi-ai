@@ -78,7 +78,6 @@ export const resumeRevision = async (resume: string, preferedWork: string) => {
     })
     .then((res) => {
       console.log("Prompt added to the database", res);
+      return res;
     });
-
-  return response.text();
 };
